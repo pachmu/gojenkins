@@ -73,17 +73,17 @@ type JobResponse struct {
 		IconUrl       string `json:"iconUrl"`
 		Score         int64  `json:"score"`
 	} `json:"healthReport"`
-	InQueue               bool       `json:"inQueue"`
-	KeepDependencies      bool       `json:"keepDependencies"`
-	LastBuild             JobBuild   `json:"lastBuild"`
-	LastCompletedBuild    JobBuild   `json:"lastCompletedBuild"`
-	LastFailedBuild       JobBuild   `json:"lastFailedBuild"`
-	LastStableBuild       JobBuild   `json:"lastStableBuild"`
-	LastSuccessfulBuild   JobBuild   `json:"lastSuccessfulBuild"`
-	LastUnstableBuild     JobBuild   `json:"lastUnstableBuild"`
-	LastUnsuccessfulBuild JobBuild   `json:"lastUnsuccessfulBuild"`
-	Name                  string     `json:"name"`
-	NextBuildNumber       int64      `json:"nextBuildNumber"`
+	InQueue               bool     `json:"inQueue"`
+	KeepDependencies      bool     `json:"keepDependencies"`
+	LastBuild             JobBuild `json:"lastBuild"`
+	LastCompletedBuild    JobBuild `json:"lastCompletedBuild"`
+	LastFailedBuild       JobBuild `json:"lastFailedBuild"`
+	LastStableBuild       JobBuild `json:"lastStableBuild"`
+	LastSuccessfulBuild   JobBuild `json:"lastSuccessfulBuild"`
+	LastUnstableBuild     JobBuild `json:"lastUnstableBuild"`
+	LastUnsuccessfulBuild JobBuild `json:"lastUnsuccessfulBuild"`
+	Name                  string   `json:"name"`
+	NextBuildNumber       int64    `json:"nextBuildNumber"`
 	Property              []struct {
 		ParameterDefinitions []ParameterDefinition `json:"parameterDefinitions"`
 	} `json:"property"`
@@ -121,8 +121,8 @@ func (j *Job) GetDetails() *JobResponse {
 
 func (j *Job) GetBuild(id int64) (*Build, error) {
 	// use job embedded URL to properly handle jobs in folders
-	jobURL := strings.Replace(j.Raw.URL, j.Jenkins.Server, "", -1)
-	build := Build{Jenkins: j.Jenkins, Job: j, Raw: new(BuildResponse), Depth: 1, Base: jobURL + "/" + strconv.FormatInt(id, 10)}
+	//jobURL := strings.Replace(j.Raw.URL, j.Jenkins.Server, "", -1)
+	build := Build{Jenkins: j.Jenkins, Job: j, Raw: new(BuildResponse), Depth: 1, Base: j.Base + "/" + strconv.FormatInt(id, 10)}
 	status, err := build.Poll()
 	if err != nil {
 		return nil, err
